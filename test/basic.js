@@ -48,3 +48,21 @@ test('takes compare functions to find values', (t) => {
     })
   })
 })
+
+test('finds entries that are buffers', (t) => {
+  t.plan(3)
+
+  const entries = []
+  for (let i = 1; i < 11; i++) {
+    entries.push(Buffer.from(i + ''))
+  }
+
+  const hc = hypercore(ram, { valueEncoding: 'binary' })
+  hc.append(entries, () => {
+    bisect(hc, Buffer.from('2'), (err, seq, entry) => {
+      t.notOk(err)
+      t.same(seq, 1)
+      t.same(entry, Buffer.from('2'))
+    })
+  })
+})
