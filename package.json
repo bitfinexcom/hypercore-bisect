@@ -1,0 +1,17 @@
+{
+  "name": "hypercore-bisect",
+  "version": "1.0.0",
+  "description": "hypercore lookups",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && tape test/*.js"
+  },
+  "author": "Mathias & Robert",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "hypercore": "^6.21.0",
+    "random-access-memory": "^3.0.0",
+    "standard": "^12.0.1",
+    "tape": "^4.9.1"
+  }
+}
