@@ -14,7 +14,12 @@ function toCompare (needle) {
   }
 }
 
-function bisect (feed, compare, cb) {
+function bisect (feed, compare, opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
+
   let top = feed.length
   let bottom = 0
 
@@ -41,6 +46,10 @@ function bisect (feed, compare, cb) {
 
         const newMiddle = Math.floor((top + bottom) / 2)
         if (newMiddle === middle) {
+          if (opts.returnClosest) {
+            return cb(null, middle, data)
+          }
+
           return cb(null, -1, null)
         }
 

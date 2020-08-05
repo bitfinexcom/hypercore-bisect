@@ -32,6 +32,32 @@ test('return -1 if no result found', (t) => {
   })
 })
 
+test('return closest entry if returnClosest enabled', (t) => {
+  t.plan(3)
+
+  const hc = hypercore(ram, { valueEncoding: 'json' })
+  hc.append([1, 2, 3, 4, 6, 7, 8, 9, 10], () => {
+    bisect(hc, 5, { returnClosest: true }, (err, seq, entry) => {
+      t.notOk(err)
+      t.same(seq, 3)
+      t.same(entry, 4)
+    })
+  })
+})
+
+test('return closest entry if returnClosest enabled - out of bounds', (t) => {
+  t.plan(3)
+
+  const hc = hypercore(ram, { valueEncoding: 'json' })
+  hc.append([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], () => {
+    bisect(hc, 11, { returnClosest: true }, (err, seq, entry) => {
+      t.notOk(err)
+      t.same(seq, 9)
+      t.same(entry, 10)
+    })
+  })
+})
+
 test('takes compare functions to find values', (t) => {
   t.plan(3)
 
