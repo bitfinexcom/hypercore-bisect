@@ -1,15 +1,15 @@
 'use strict'
 
 function toCompare (needle) {
-  const isBuf = Buffer.isBuffer(needle)
+  if (Buffer.isBuffer(needle)) {
+    return function _compareBuffer (res, cb) {
+      cb(null, res.compare(needle))
+    }
+  }
 
   return function _compare (res, cb) {
-    if ((isBuf && res.equals(needle)) || (!isBuf && res === needle)) {
-      return cb(null, 0)
-    }
-
+    if (res === needle) return cb(null, 0)
     if (res < needle) return cb(null, -1)
-
     return cb(null, needle)
   }
 }
